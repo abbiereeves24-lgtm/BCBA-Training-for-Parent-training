@@ -1,0 +1,1501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ParentBridge — BCBA Parent Training Mastery</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0F1117;
+      --bg-card: #181B24;
+      --bg-card-hover: #1E2230;
+      --surface: #252A38;
+      --border: #2A3045;
+      --text: #E8EAF0;
+      --text-muted: #8B90A3;
+      --text-dim: #5C6178;
+      --accent: #6EE7B7;
+      --accent-glow: rgba(110, 231, 183, 0.15);
+      --accent-deep: #10B981;
+      --warm: #F59E0B;
+      --warm-glow: rgba(245, 158, 11, 0.12);
+      --coral: #FB7185;
+      --coral-glow: rgba(251, 113, 133, 0.12);
+      --sky: #7DD3FC;
+      --sky-glow: rgba(125, 211, 252, 0.12);
+      --violet: #A78BFA;
+      --violet-glow: rgba(167, 139, 250, 0.12);
+      --radius: 12px;
+      --radius-lg: 20px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+    /* ── Grain overlay ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* ── Hero section ── */
+    .hero {
+      position: relative;
+      padding: 100px 40px 80px;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -200px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 900px;
+      height: 600px;
+      background: radial-gradient(ellipse, rgba(110, 231, 183, 0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      background: var(--accent-glow);
+      border: 1px solid rgba(110, 231, 183, 0.2);
+      border-radius: 100px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--accent);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+      animation: fadeDown 0.6s ease-out;
+    }
+
+    .hero-badge::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    .hero h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2.8rem, 6vw, 5rem);
+      line-height: 1.1;
+      color: var(--text);
+      margin-bottom: 20px;
+      animation: fadeDown 0.7s ease-out 0.1s both;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .hero p {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto 36px;
+      font-weight: 300;
+      animation: fadeDown 0.7s ease-out 0.2s both;
+    }
+
+    .hero-stats {
+      display: flex;
+      justify-content: center;
+      gap: 48px;
+      animation: fadeDown 0.7s ease-out 0.35s both;
+    }
+
+    .hero-stat {
+      text-align: center;
+    }
+
+    .hero-stat .num {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2rem;
+      color: var(--text);
+    }
+
+    .hero-stat .label {
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-top: 2px;
+    }
+
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Progress bar ── */
+    .progress-bar-container {
+      max-width: 1100px;
+      margin: 0 auto 60px;
+      padding: 0 40px;
+      animation: fadeDown 0.7s ease-out 0.45s both;
+    }
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 12px;
+    }
+
+    .progress-header .title {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .progress-header .percent {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 8px;
+      background: var(--surface);
+      border-radius: 100px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent-deep), var(--accent));
+      border-radius: 100px;
+      transition: width 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    /* ── Navigation tabs ── */
+    .nav-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      padding: 0 40px;
+      margin-bottom: 48px;
+      flex-wrap: wrap;
+    }
+
+    .nav-tab {
+      padding: 10px 22px;
+      border-radius: 100px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      background: transparent;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      white-space: nowrap;
+    }
+
+    .nav-tab:hover {
+      color: var(--text);
+      background: var(--surface);
+    }
+
+    .nav-tab.active {
+      color: var(--accent);
+      background: var(--accent-glow);
+      border-color: rgba(110, 231, 183, 0.2);
+    }
+
+    /* ── Main content ── */
+    .content {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 40px 100px;
+    }
+
+    /* ── Section header ── */
+    .section-block {
+      margin-bottom: 56px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .section-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    .section-icon.green { background: var(--accent-glow); }
+    .section-icon.warm { background: var(--warm-glow); }
+    .section-icon.coral { background: var(--coral-glow); }
+    .section-icon.sky { background: var(--sky-glow); }
+    .section-icon.violet { background: var(--violet-glow); }
+
+    .section-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.6rem;
+      color: var(--text);
+    }
+
+    .section-subtitle {
+      font-size: 0.88rem;
+      color: var(--text-dim);
+      margin-top: 2px;
+    }
+
+    /* ── Module cards ── */
+    .modules-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 16px;
+    }
+
+    .module-card {
+      position: relative;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      overflow: hidden;
+    }
+
+    .module-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .module-card:hover {
+      background: var(--bg-card-hover);
+      border-color: rgba(110, 231, 183, 0.15);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+    }
+
+    .module-card:hover::before { opacity: 1; }
+
+    .module-card.completed {
+      border-color: rgba(110, 231, 183, 0.2);
+    }
+
+    .module-card.completed::after {
+      content: '';
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 8px;
+      height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      box-shadow: 0 0 12px var(--accent);
+    }
+
+    .module-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .module-number {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      background: var(--surface);
+      padding: 3px 10px;
+      border-radius: 100px;
+      letter-spacing: 0.05em;
+    }
+
+    .module-duration {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .module-title {
+      font-weight: 600;
+      font-size: 1.05rem;
+      color: var(--text);
+      margin-bottom: 8px;
+      line-height: 1.35;
+    }
+
+    .module-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+      margin-bottom: 18px;
+    }
+
+    .module-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .module-tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .module-tag {
+      font-size: 0.7rem;
+      padding: 3px 10px;
+      border-radius: 100px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+
+    .module-tag.green { background: var(--accent-glow); color: var(--accent); }
+    .module-tag.warm { background: var(--warm-glow); color: var(--warm); }
+    .module-tag.coral { background: var(--coral-glow); color: var(--coral); }
+    .module-tag.sky { background: var(--sky-glow); color: var(--sky); }
+    .module-tag.violet { background: var(--violet-glow); color: var(--violet); }
+
+    .module-check {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      flex-shrink: 0;
+      background: transparent;
+    }
+
+    .module-check:hover {
+      border-color: var(--accent);
+    }
+
+    .module-check.checked {
+      background: var(--accent);
+      border-color: var(--accent);
+      animation: checkBounce 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .module-check.checked svg {
+      stroke: var(--bg);
+    }
+
+    .module-check svg {
+      width: 14px;
+      height: 14px;
+      stroke: transparent;
+      stroke-width: 2.5;
+      fill: none;
+      transition: stroke 0.2s;
+    }
+
+    @keyframes checkBounce {
+      0% { transform: scale(0.8); }
+      50% { transform: scale(1.15); }
+      100% { transform: scale(1); }
+    }
+
+    /* ── Expanded module panel ── */
+    .module-expanded {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(15, 17, 23, 0.85);
+      backdrop-filter: blur(12px);
+      animation: fadeIn 0.25s ease;
+    }
+
+    .module-expanded.open { display: flex; align-items: center; justify-content: center; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .module-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      width: 90%;
+      max-width: 700px;
+      max-height: 85vh;
+      overflow-y: auto;
+      padding: 44px;
+      position: relative;
+      animation: slideUp 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(30px) scale(0.97); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .panel-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--surface);
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .panel-close:hover { background: var(--border); color: var(--text); }
+
+    .panel-number {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--accent);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .panel-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.8rem;
+      margin-bottom: 8px;
+      line-height: 1.2;
+    }
+
+    .panel-meta {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 28px;
+      font-size: 0.82rem;
+      color: var(--text-dim);
+    }
+
+    .panel-body h3 {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--text);
+      margin: 24px 0 10px;
+    }
+
+    .panel-body p, .panel-body li {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    .panel-body ul {
+      padding-left: 20px;
+    }
+
+    .panel-body li {
+      margin-bottom: 6px;
+    }
+
+    .panel-body li::marker {
+      color: var(--accent);
+    }
+
+    .panel-actions {
+      margin-top: 32px;
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn {
+      padding: 12px 28px;
+      border-radius: 100px;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+      font-size: 0.88rem;
+      border: none;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: var(--bg);
+    }
+
+    .btn-primary:hover {
+      background: #86EFAC;
+      box-shadow: 0 4px 20px rgba(110, 231, 183, 0.3);
+    }
+
+    .btn-secondary {
+      background: var(--surface);
+      color: var(--text-muted);
+    }
+
+    .btn-secondary:hover {
+      background: var(--border);
+      color: var(--text);
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .hero { padding: 70px 20px 60px; }
+      .hero-stats { gap: 28px; }
+      .content { padding: 0 20px 80px; }
+      .progress-bar-container { padding: 0 20px; }
+      .nav-tabs { padding: 0 16px; }
+      .modules-grid { grid-template-columns: 1fr; }
+      .module-panel { padding: 28px; width: 95%; }
+      .panel-title { font-size: 1.4rem; }
+      .hero-stats { flex-wrap: wrap; }
+    }
+
+    /* ── Toast notification ── */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 24px;
+      font-size: 0.88rem;
+      color: var(--text);
+      z-index: 2000;
+      transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s;
+      opacity: 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    .toast-icon {
+      color: var(--accent);
+      font-size: 1.1rem;
+    }
+
+    /* ── Reset button ── */
+    .reset-btn {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      padding: 10px 18px;
+      border-radius: 100px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--text-dim);
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: all 0.2s;
+      z-index: 100;
+    }
+
+    .reset-btn:hover {
+      color: var(--coral);
+      border-color: rgba(251, 113, 133, 0.3);
+      background: var(--coral-glow);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-badge">BCBA Professional Development</div>
+    <h1>Master the Art of<br><em>Parent Training</em></h1>
+    <p>A structured, evidence-based course to help BCBAs deliver exceptional parent training sessions that create lasting change.</p>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="num" id="totalModules">24</div>
+        <div class="label">Modules</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num">5</div>
+        <div class="label">Sections</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num" id="completedCount">0</div>
+        <div class="label">Completed</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Overall progress -->
+  <div class="progress-bar-container">
+    <div class="progress-header">
+      <span class="title">Course Progress</span>
+      <span class="percent" id="progressPercent">0%</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+    </div>
+  </div>
+
+  <!-- Navigation tabs -->
+  <div class="nav-tabs" id="navTabs">
+    <button class="nav-tab active" data-section="all">All Modules</button>
+    <button class="nav-tab" data-section="foundations">Foundations</button>
+    <button class="nav-tab" data-section="assessment">Assessment</button>
+    <button class="nav-tab" data-section="teaching">Teaching Strategies</button>
+    <button class="nav-tab" data-section="behavior">Behavior Management</button>
+    <button class="nav-tab" data-section="advanced">Advanced Topics</button>
+  </div>
+
+  <!-- Content -->
+  <div class="content" id="content"></div>
+
+  <!-- Expanded module panel -->
+  <div class="module-expanded" id="expandedPanel">
+    <div class="module-panel" id="modulePanel">
+      <button class="panel-close" onclick="closePanel()">✕</button>
+      <div id="panelContent"></div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">
+    <span class="toast-icon">✓</span>
+    <span id="toastText"></span>
+  </div>
+
+  <!-- Reset button -->
+  <button class="reset-btn" onclick="resetProgress()">Reset Progress</button>
+
+<script>
+const COURSE_DATA = {
+  foundations: {
+    title: "Foundations of Parent Training",
+    subtitle: "Build rapport, set expectations, and understand the 'why'",
+    icon: "🌱",
+    color: "green",
+    modules: [
+      {
+        id: "f1",
+        num: "01",
+        title: "Why Parent Training Matters",
+        desc: "Understand the research basis for caregiver involvement and how it impacts treatment outcomes across settings.",
+        duration: "20 min",
+        tags: [{ label: "Core", color: "green" }],
+        details: {
+          overview: "Parent training is one of the most critical components of ABA therapy. Research consistently shows that when caregivers are trained to implement behavior-analytic strategies, generalization of skills improves dramatically and treatment gains are maintained long after formal services end.",
+          objectives: [
+            "Cite at least 3 research studies supporting caregiver training in ABA",
+            "Explain the relationship between caregiver involvement and generalization",
+            "Describe how parent training impacts treatment dosage and intensity",
+            "Identify the ethical mandate for caregiver training in the BACB Ethics Code"
+          ],
+          keyTopics: [
+            "Generalization and maintenance research",
+            "Treatment integrity across settings",
+            "Social validity of parent-implemented interventions",
+            "BACB Ethics Code 2.01 and caregiver involvement requirements"
+          ]
+        }
+      },
+      {
+        id: "f2",
+        num: "02",
+        title: "Building Therapeutic Rapport",
+        desc: "Techniques for building trust and collaboration with families from diverse backgrounds and varying readiness levels.",
+        duration: "25 min",
+        tags: [{ label: "Core", color: "green" }, { label: "Interpersonal", color: "violet" }],
+        details: {
+          overview: "Before any teaching can occur, BCBAs must establish a collaborative partnership with caregivers. This module covers evidence-based approaches to rapport building, cultural humility, and creating psychologically safe training environments.",
+          objectives: [
+            "Demonstrate active listening and motivational interviewing techniques",
+            "Apply cultural humility frameworks in parent interactions",
+            "Identify barriers to caregiver engagement and strategies to address them",
+            "Create a welcoming and non-judgmental training environment"
+          ],
+          keyTopics: [
+            "Active listening and reflective responding",
+            "Motivational interviewing basics for BCBAs",
+            "Cultural responsiveness in parent training",
+            "Addressing power dynamics in the BCBA-caregiver relationship"
+          ]
+        }
+      },
+      {
+        id: "f3",
+        num: "03",
+        title: "Setting Expectations & Goals",
+        desc: "Collaboratively define training goals with parents using SMART frameworks and values-based planning.",
+        duration: "20 min",
+        tags: [{ label: "Planning", color: "sky" }],
+        details: {
+          overview: "Effective parent training starts with clear, collaborative goal-setting. This module teaches BCBAs how to use SMART goals, values-based approaches, and shared decision-making to create training plans that parents are invested in.",
+          objectives: [
+            "Write SMART parent training goals collaboratively",
+            "Conduct a values assessment with caregivers",
+            "Prioritize training targets based on family needs and readiness",
+            "Create a transparent training roadmap for families"
+          ],
+          keyTopics: [
+            "SMART goal framework applied to parent training",
+            "Values-based goal setting",
+            "Readiness assessment for caregivers",
+            "Training roadmaps and timelines"
+          ]
+        }
+      },
+      {
+        id: "f4",
+        num: "04",
+        title: "Adult Learning Principles",
+        desc: "Apply andragogy and adult learning theory to make your parent training sessions more effective and engaging.",
+        duration: "25 min",
+        tags: [{ label: "Theory", color: "warm" }],
+        details: {
+          overview: "Parents are adult learners with their own experiences, motivations, and learning preferences. This module covers andragogy principles and how to adapt your teaching approach for adult audiences rather than using child-focused teaching methods.",
+          objectives: [
+            "Differentiate between pedagogy and andragogy",
+            "Apply Knowles' principles of adult learning to parent training",
+            "Adapt training materials for different learning styles",
+            "Use experiential learning techniques in sessions"
+          ],
+          keyTopics: [
+            "Knowles' 6 principles of adult learning",
+            "Self-directed learning in parent training",
+            "Experiential learning cycle",
+            "Multimodal training material design"
+          ]
+        }
+      },
+      {
+        id: "f5",
+        num: "05",
+        title: "Ethical Considerations",
+        desc: "Navigate consent, boundaries, scope, and the ethical complexities unique to caregiver training contexts.",
+        duration: "30 min",
+        tags: [{ label: "Ethics", color: "coral" }],
+        details: {
+          overview: "Parent training introduces unique ethical considerations around informed consent, boundaries of competence, dual relationships, and scope of practice. This module helps BCBAs navigate these challenges while maintaining the highest ethical standards.",
+          objectives: [
+            "Identify ethical issues specific to parent training contexts",
+            "Apply the BACB Ethics Code to parent training scenarios",
+            "Navigate dual relationship concerns with caregivers",
+            "Recognize when to refer families to other professionals"
+          ],
+          keyTopics: [
+            "Informed consent for parent training",
+            "Scope of practice boundaries",
+            "Managing dual relationships",
+            "Mandatory reporting and caregiver training",
+            "Confidentiality in family-centered services"
+          ]
+        }
+      }
+    ]
+  },
+  assessment: {
+    title: "Assessing Caregiver Needs",
+    subtitle: "Evaluate skills, identify barriers, and tailor your approach",
+    icon: "🔍",
+    color: "sky",
+    modules: [
+      {
+        id: "a1",
+        num: "06",
+        title: "Caregiver Skills Assessment",
+        desc: "Conduct baseline assessments of parent skills using structured observation and validated tools.",
+        duration: "30 min",
+        tags: [{ label: "Assessment", color: "sky" }],
+        details: {
+          overview: "Before training, it's essential to understand what parents can already do. This module covers formal and informal methods for assessing caregiver competencies and identifying specific skill deficits to target.",
+          objectives: [
+            "Use structured observation to assess caregiver-child interactions",
+            "Select and administer validated caregiver assessment tools",
+            "Identify caregiver strengths and areas for growth",
+            "Create individualized training plans from assessment data"
+          ],
+          keyTopics: [
+            "Caregiver Skills Assessment (CSA) overview",
+            "Structured observation protocols",
+            "Task analysis of caregiver behaviors",
+            "Strength-based assessment approaches"
+          ]
+        }
+      },
+      {
+        id: "a2",
+        num: "07",
+        title: "Identifying Barriers to Training",
+        desc: "Recognize and address logistical, emotional, and systemic barriers families face in participating in training.",
+        duration: "20 min",
+        tags: [{ label: "Assessment", color: "sky" }, { label: "Interpersonal", color: "violet" }],
+        details: {
+          overview: "Many families face significant barriers to fully engaging in parent training. This module teaches BCBAs to proactively identify and address barriers including time constraints, mental health challenges, language differences, and competing life demands.",
+          objectives: [
+            "Conduct a barriers assessment with families",
+            "Differentiate between skill deficits and performance deficits in caregivers",
+            "Develop strategies to reduce logistical barriers",
+            "Address emotional and psychological barriers with sensitivity"
+          ],
+          keyTopics: [
+            "Common barriers taxonomy",
+            "Skill deficit vs. performance deficit analysis",
+            "Logistical accommodations and creative scheduling",
+            "Caregiver stress and burnout recognition"
+          ]
+        }
+      },
+      {
+        id: "a3",
+        num: "08",
+        title: "Functional Assessment of Family Routines",
+        desc: "Map daily routines to identify natural teaching opportunities and high-priority contexts for intervention.",
+        duration: "25 min",
+        tags: [{ label: "Assessment", color: "sky" }, { label: "Planning", color: "green" }],
+        details: {
+          overview: "Understanding a family's daily routines is crucial for embedding ABA strategies into natural contexts. This module teaches BCBAs to conduct routine-based assessments and identify the most impactful moments for parent-implemented intervention.",
+          objectives: [
+            "Conduct a routines-based interview with families",
+            "Create a routine mapping document",
+            "Identify high-leverage teaching opportunities within daily life",
+            "Prioritize routines based on family stress and child learning needs"
+          ],
+          keyTopics: [
+            "Routines-based interview protocols",
+            "Activity matrix development",
+            "Embedded instruction opportunities",
+            "Goodness of fit in routine-based interventions"
+          ]
+        }
+      },
+      {
+        id: "a4",
+        num: "09",
+        title: "Progress Monitoring for Caregivers",
+        desc: "Design efficient data collection systems for tracking caregiver fidelity and competency growth over time.",
+        duration: "25 min",
+        tags: [{ label: "Data", color: "warm" }],
+        details: {
+          overview: "Just as we monitor child progress, caregiver progress must be tracked systematically. This module covers practical, non-burdensome approaches to measuring treatment fidelity and skill acquisition in caregivers.",
+          objectives: [
+            "Design fidelity checklists for caregiver-implemented procedures",
+            "Select appropriate measurement systems for caregiver behavior",
+            "Graph and analyze caregiver progress data",
+            "Make data-based decisions about training pace and content"
+          ],
+          keyTopics: [
+            "Treatment fidelity measurement",
+            "Caregiver data collection systems",
+            "Graphing caregiver progress",
+            "Decision rules for advancing or revisiting training content"
+          ]
+        }
+      }
+    ]
+  },
+  teaching: {
+    title: "Teaching Strategies",
+    subtitle: "BST, modeling, role-play, and real-time coaching techniques",
+    icon: "🎯",
+    color: "warm",
+    modules: [
+      {
+        id: "t1",
+        num: "10",
+        title: "Behavioral Skills Training (BST)",
+        desc: "Master the gold-standard BST framework: instruction, modeling, rehearsal, and feedback in parent training contexts.",
+        duration: "35 min",
+        tags: [{ label: "BST", color: "warm" }, { label: "Core", color: "green" }],
+        details: {
+          overview: "Behavioral Skills Training is the most well-supported method for teaching new skills to caregivers. This module provides a deep dive into each BST component and how to implement them effectively in parent training sessions.",
+          objectives: [
+            "Implement all four BST components fluently",
+            "Adapt BST for remote and in-person parent training",
+            "Troubleshoot common BST implementation challenges",
+            "Plan multi-session BST training sequences"
+          ],
+          keyTopics: [
+            "Instruction: clear, concise, jargon-free explanations",
+            "Modeling: live, video, and written model types",
+            "Rehearsal: structured practice with graduated complexity",
+            "Feedback: positive, corrective, and performance-based feedback delivery"
+          ]
+        }
+      },
+      {
+        id: "t2",
+        num: "11",
+        title: "Effective Modeling Techniques",
+        desc: "Demonstrate procedures using live modeling, video modeling, and self-modeling strategies.",
+        duration: "20 min",
+        tags: [{ label: "BST", color: "warm" }],
+        details: {
+          overview: "Modeling is a powerful teaching tool, but doing it effectively requires intentional planning. This module covers various modeling strategies and when to use each one for maximum caregiver learning.",
+          objectives: [
+            "Select the appropriate modeling strategy for different skills",
+            "Create effective video models for parent training",
+            "Use self-modeling to build caregiver confidence",
+            "Combine modeling with verbal description for clarity"
+          ],
+          keyTopics: [
+            "Live modeling best practices",
+            "Video modeling creation and implementation",
+            "Self-as-model techniques",
+            "In-situ modeling during natural routines"
+          ]
+        }
+      },
+      {
+        id: "t3",
+        num: "12",
+        title: "Giving Effective Feedback",
+        desc: "Deliver feedback that reinforces caregiver effort, corrects errors constructively, and maintains motivation.",
+        duration: "25 min",
+        tags: [{ label: "BST", color: "warm" }, { label: "Interpersonal", color: "violet" }],
+        details: {
+          overview: "How you deliver feedback determines whether parents feel empowered or demoralized. This module teaches BCBAs to balance positive and corrective feedback, use the feedback sandwich appropriately, and tailor feedback to individual preferences.",
+          objectives: [
+            "Deliver performance-specific positive feedback",
+            "Provide corrective feedback without undermining confidence",
+            "Use the PNP (positive-needs work-positive) model appropriately",
+            "Adapt feedback delivery to caregiver preferences and emotional state"
+          ],
+          keyTopics: [
+            "Positive vs. corrective feedback ratios",
+            "Immediate vs. delayed feedback timing",
+            "Written feedback summaries",
+            "Managing emotional reactions to feedback"
+          ]
+        }
+      },
+      {
+        id: "t4",
+        num: "13",
+        title: "Role-Play & Rehearsal",
+        desc: "Structure practice opportunities that build confidence and fluency before parents implement with their child.",
+        duration: "20 min",
+        tags: [{ label: "BST", color: "warm" }, { label: "Practice", color: "coral" }],
+        details: {
+          overview: "Rehearsal is where learning becomes doing. This module covers how to structure role-play sessions that feel natural, build confidence gradually, and prepare parents for real-world implementation.",
+          objectives: [
+            "Design graduated rehearsal sequences",
+            "Create realistic role-play scenarios",
+            "Reduce caregiver anxiety around practice",
+            "Use in-situ rehearsal during natural routines"
+          ],
+          keyTopics: [
+            "Graduated complexity in rehearsal",
+            "Creating safe practice environments",
+            "Simulated vs. in-vivo rehearsal",
+            "Fluency-based practice criteria"
+          ]
+        }
+      },
+      {
+        id: "t5",
+        num: "14",
+        title: "Real-Time Coaching & Bug-in-Ear",
+        desc: "Provide in-the-moment coaching while parents interact with their child using proven coaching frameworks.",
+        duration: "30 min",
+        tags: [{ label: "Coaching", color: "coral" }],
+        details: {
+          overview: "Real-time coaching allows BCBAs to support parents during live interactions. This module covers in-ear coaching technology, coaching frameworks, and how to provide support without disrupting the parent-child dynamic.",
+          objectives: [
+            "Set up and use bug-in-ear coaching technology",
+            "Apply real-time coaching frameworks effectively",
+            "Gradually fade coaching supports over time",
+            "Balance coaching with natural parent-child interaction"
+          ],
+          keyTopics: [
+            "Bug-in-ear technology and setup",
+            "PCIT-inspired coaching frameworks",
+            "Coaching fading strategies",
+            "Remote coaching via telehealth"
+          ]
+        }
+      },
+      {
+        id: "t6",
+        num: "15",
+        title: "Teaching Without Jargon",
+        desc: "Translate behavior-analytic concepts into plain language that parents can understand and remember.",
+        duration: "20 min",
+        tags: [{ label: "Communication", color: "violet" }],
+        details: {
+          overview: "Effective parent training requires translating complex ABA terminology into language parents can understand, remember, and use. This module provides a framework for jargon-free communication without losing technical accuracy.",
+          objectives: [
+            "Create a personal jargon-to-plain-language glossary",
+            "Explain reinforcement, extinction, and prompting without jargon",
+            "Use analogies and metaphors effectively in teaching",
+            "Check for understanding without quizzing parents"
+          ],
+          keyTopics: [
+            "Common jargon and plain-language alternatives",
+            "Analogy-based teaching for ABA concepts",
+            "Visual aids and handouts for parents",
+            "Assessing comprehension respectfully"
+          ]
+        }
+      }
+    ]
+  },
+  behavior: {
+    title: "Behavior Management Training",
+    subtitle: "Help parents handle challenging situations with confidence",
+    icon: "🛡️",
+    color: "coral",
+    modules: [
+      {
+        id: "b1",
+        num: "16",
+        title: "Teaching Function-Based Thinking",
+        desc: "Help parents understand the 'why' behind behavior using accessible explanations of functional assessment.",
+        duration: "30 min",
+        tags: [{ label: "FBA", color: "coral" }, { label: "Core", color: "green" }],
+        details: {
+          overview: "When parents understand why their child engages in challenging behavior, they become better intervention partners. This module teaches BCBAs how to share functional thinking with parents in an accessible, empowering way.",
+          objectives: [
+            "Explain the four functions of behavior in parent-friendly language",
+            "Teach parents to identify antecedents and consequences",
+            "Help parents recognize patterns in their child's behavior",
+            "Connect functional understanding to intervention strategies"
+          ],
+          keyTopics: [
+            "Four functions in plain language",
+            "ABC tracking for parents",
+            "Pattern recognition activities",
+            "Connecting functions to solutions"
+          ]
+        }
+      },
+      {
+        id: "b2",
+        num: "17",
+        title: "Antecedent Strategies for Parents",
+        desc: "Teach parents proactive strategies including environmental arrangement, visual supports, and transition warnings.",
+        duration: "25 min",
+        tags: [{ label: "Prevention", color: "sky" }],
+        details: {
+          overview: "Prevention is more effective than reaction. This module covers how to teach parents proactive strategies that prevent challenging behavior before it starts, creating smoother daily routines for the whole family.",
+          objectives: [
+            "Teach parents to arrange environments proactively",
+            "Create and implement visual schedules with families",
+            "Train transition warnings and countdowns",
+            "Implement choice-making and first-then boards"
+          ],
+          keyTopics: [
+            "Environmental arrangement strategies",
+            "Visual supports toolkit for families",
+            "Transition support strategies",
+            "Demand fading and task modification"
+          ]
+        }
+      },
+      {
+        id: "b3",
+        num: "18",
+        title: "Reinforcement Training for Parents",
+        desc: "Help parents master differential reinforcement, token economies, and natural reinforcement in daily routines.",
+        duration: "30 min",
+        tags: [{ label: "Core", color: "green" }, { label: "Practice", color: "warm" }],
+        details: {
+          overview: "Reinforcement is the cornerstone of behavior change, and parents need to understand how to use it effectively in everyday life. This module teaches BCBAs how to train parents on reinforcement principles and systems.",
+          objectives: [
+            "Teach parents to identify effective reinforcers",
+            "Train implementation of simple token economies",
+            "Explain and demonstrate differential reinforcement",
+            "Fade from contrived to natural reinforcement systems"
+          ],
+          keyTopics: [
+            "Preference assessments for the home",
+            "Token economy design and troubleshooting",
+            "DRA, DRI, and DRO in plain language",
+            "Natural reinforcement in routines"
+          ]
+        }
+      },
+      {
+        id: "b4",
+        num: "19",
+        title: "Crisis Prevention & Response",
+        desc: "Prepare parents for high-intensity moments with safety plans, de-escalation, and crisis protocols.",
+        duration: "35 min",
+        tags: [{ label: "Safety", color: "coral" }, { label: "Core", color: "green" }],
+        details: {
+          overview: "Parents need clear, practiced protocols for managing behavioral crises safely. This module covers how to create individualized crisis plans, teach de-escalation, and ensure family safety during high-intensity moments.",
+          objectives: [
+            "Develop individualized family crisis plans",
+            "Teach parents de-escalation techniques",
+            "Train safety responses for dangerous behaviors",
+            "Debrief with families after crisis events"
+          ],
+          keyTopics: [
+            "Crisis plan development and review",
+            "De-escalation frameworks for families",
+            "Safety signal systems",
+            "Post-crisis processing and debriefing"
+          ]
+        }
+      }
+    ]
+  },
+  advanced: {
+    title: "Advanced Topics",
+    subtitle: "Telehealth, group training, sustainability, and self-care",
+    icon: "🚀",
+    color: "violet",
+    modules: [
+      {
+        id: "v1",
+        num: "20",
+        title: "Telehealth Parent Training",
+        desc: "Adapt your parent training methods for virtual delivery while maintaining engagement and fidelity.",
+        duration: "25 min",
+        tags: [{ label: "Telehealth", color: "violet" }],
+        details: {
+          overview: "Telehealth has become a permanent part of service delivery. This module covers best practices for conducting effective parent training sessions remotely, including technology, engagement strategies, and adapting BST for virtual formats.",
+          objectives: [
+            "Set up an effective telehealth parent training session",
+            "Adapt BST components for virtual delivery",
+            "Maintain caregiver engagement during remote sessions",
+            "Troubleshoot common telehealth challenges"
+          ],
+          keyTopics: [
+            "Technology setup and requirements",
+            "Virtual BST adaptations",
+            "Engagement strategies for remote sessions",
+            "Hybrid training models"
+          ]
+        }
+      },
+      {
+        id: "v2",
+        num: "21",
+        title: "Group Parent Training",
+        desc: "Design and facilitate group training sessions for multiple families covering shared skill areas.",
+        duration: "30 min",
+        tags: [{ label: "Group", color: "sky" }, { label: "Planning", color: "green" }],
+        details: {
+          overview: "Group parent training can be an efficient and socially supportive way to teach common skills. This module covers how to design, facilitate, and evaluate group training sessions that meet diverse family needs.",
+          objectives: [
+            "Design a multi-session group parent training curriculum",
+            "Facilitate group discussions and activities effectively",
+            "Manage group dynamics and differing skill levels",
+            "Evaluate group training outcomes"
+          ],
+          keyTopics: [
+            "Curriculum design for group formats",
+            "Facilitation techniques",
+            "Peer support and community building",
+            "Outcome measurement in group training"
+          ]
+        }
+      },
+      {
+        id: "v3",
+        num: "22",
+        title: "Training for Generalization",
+        desc: "Ensure parent skills transfer across settings, people, and situations beyond the training context.",
+        duration: "25 min",
+        tags: [{ label: "Generalization", color: "warm" }],
+        details: {
+          overview: "If parents can only implement strategies when the BCBA is present, training hasn't truly worked. This module covers programming for generalization of caregiver skills across settings, situations, and over time.",
+          objectives: [
+            "Program for generalization from the start of training",
+            "Train across multiple settings and routines",
+            "Use multiple exemplar training with caregivers",
+            "Assess generalization of caregiver skills systematically"
+          ],
+          keyTopics: [
+            "Stokes and Baer generalization strategies for caregivers",
+            "Multiple exemplar training",
+            "Natural environment training emphasis",
+            "Maintenance probes and booster sessions"
+          ]
+        }
+      },
+      {
+        id: "v4",
+        num: "23",
+        title: "Supporting Caregiver Wellbeing",
+        desc: "Recognize and address caregiver stress, burnout, and mental health needs as part of ethical practice.",
+        duration: "25 min",
+        tags: [{ label: "Wellbeing", color: "coral" }, { label: "Ethics", color: "violet" }],
+        details: {
+          overview: "Caregivers of children with developmental disabilities experience high rates of stress and burnout. BCBAs have an ethical responsibility to recognize and address caregiver wellbeing as a component of effective service delivery.",
+          objectives: [
+            "Screen for caregiver stress and burnout",
+            "Provide appropriate support and referrals",
+            "Adapt training demands to caregiver capacity",
+            "Incorporate self-care discussions into parent training"
+          ],
+          keyTopics: [
+            "Caregiver stress research and indicators",
+            "Compassion fatigue in families",
+            "Scope of practice in supporting parent mental health",
+            "Referral networks and resources"
+          ]
+        }
+      },
+      {
+        id: "v5",
+        num: "24",
+        title: "Building Long-Term Independence",
+        desc: "Systematically fade your involvement and empower families to maintain and adapt strategies independently.",
+        duration: "30 min",
+        tags: [{ label: "Sustainability", color: "green" }, { label: "Core", color: "green" }],
+        details: {
+          overview: "The ultimate goal of parent training is to make yourself unnecessary. This final module covers systematic fading of BCBA support, building family self-efficacy, and creating sustainable systems that endure after services end.",
+          objectives: [
+            "Develop a systematic fading plan for BCBA support",
+            "Build caregiver self-monitoring and problem-solving skills",
+            "Create family-maintained data systems",
+            "Plan for booster sessions and long-term follow-up"
+          ],
+          keyTopics: [
+            "Systematic fading of professional support",
+            "Self-management training for caregivers",
+            "Family-friendly data systems",
+            "Discharge planning and transition protocols"
+          ]
+        }
+      }
+    ]
+  }
+};
+
+// State
+let completedModules = JSON.parse(localStorage.getItem('parentbridge_completed') || '[]');
+let activeSection = 'all';
+
+function getAllModules() {
+  const all = [];
+  Object.values(COURSE_DATA).forEach(section => {
+    section.modules.forEach(m => all.push(m));
+  });
+  return all;
+}
+
+function updateProgress() {
+  const total = getAllModules().length;
+  const completed = completedModules.length;
+  const percent = Math.round((completed / total) * 100);
+
+  document.getElementById('progressFill').style.width = percent + '%';
+  document.getElementById('progressPercent').textContent = percent + '%';
+  document.getElementById('completedCount').textContent = completed;
+  document.getElementById('totalModules').textContent = total;
+
+  localStorage.setItem('parentbridge_completed', JSON.stringify(completedModules));
+}
+
+function toggleModule(moduleId, event) {
+  event.stopPropagation();
+  const idx = completedModules.indexOf(moduleId);
+  if (idx > -1) {
+    completedModules.splice(idx, 1);
+    showToast('Module unmarked');
+  } else {
+    completedModules.push(moduleId);
+    showToast('Module completed! 🎉');
+  }
+  updateProgress();
+  renderContent();
+}
+
+function openPanel(moduleId) {
+  let module = null;
+  Object.values(COURSE_DATA).forEach(section => {
+    section.modules.forEach(m => {
+      if (m.id === moduleId) module = m;
+    });
+  });
+  if (!module) return;
+
+  const isCompleted = completedModules.includes(module.id);
+  const d = module.details;
+
+  document.getElementById('panelContent').innerHTML = `
+    <div class="panel-number">Module ${module.num}</div>
+    <div class="panel-title">${module.title}</div>
+    <div class="panel-meta">
+      <span>⏱ ${module.duration}</span>
+      <span>${isCompleted ? '✅ Completed' : '○ Not started'}</span>
+    </div>
+    <div class="panel-body">
+      <h3>Overview</h3>
+      <p>${d.overview}</p>
+      <h3>Learning Objectives</h3>
+      <ul>${d.objectives.map(o => `<li>${o}</li>`).join('')}</ul>
+      <h3>Key Topics</h3>
+      <ul>${d.keyTopics.map(t => `<li>${t}</li>`).join('')}</ul>
+    </div>
+    <div class="panel-actions">
+      <button class="btn btn-primary" onclick="toggleModule('${module.id}', event); renderContent(); updatePanelButton('${module.id}');">
+        ${isCompleted ? 'Mark as Incomplete' : 'Mark as Complete'}
+      </button>
+      <button class="btn btn-secondary" onclick="closePanel()">Close</button>
+    </div>
+  `;
+
+  document.getElementById('expandedPanel').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closePanel() {
+  document.getElementById('expandedPanel').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function updatePanelButton(moduleId) {
+  // Re-open to refresh state
+  openPanel(moduleId);
+}
+
+function showToast(message) {
+  const toast = document.getElementById('toast');
+  document.getElementById('toastText').textContent = message;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2500);
+}
+
+function resetProgress() {
+  if (confirm('Reset all progress? This cannot be undone.')) {
+    completedModules = [];
+    updateProgress();
+    renderContent();
+    showToast('Progress reset');
+  }
+}
+
+function renderContent() {
+  const container = document.getElementById('content');
+  let html = '';
+
+  const sections = activeSection === 'all'
+    ? Object.entries(COURSE_DATA)
+    : Object.entries(COURSE_DATA).filter(([key]) => key === activeSection);
+
+  sections.forEach(([key, section]) => {
+    const completedInSection = section.modules.filter(m => completedModules.includes(m.id)).length;
+
+    html += `
+      <div class="section-block" data-section="${key}">
+        <div class="section-header">
+          <div class="section-icon ${section.color}">${section.icon}</div>
+          <div>
+            <div class="section-title">${section.title} <span style="font-family:'JetBrains Mono';font-size:0.75rem;color:var(--text-dim);margin-left:8px;">${completedInSection}/${section.modules.length}</span></div>
+            <div class="section-subtitle">${section.subtitle}</div>
+          </div>
+        </div>
+        <div class="modules-grid">
+          ${section.modules.map(m => {
+            const isCompleted = completedModules.includes(m.id);
+            return `
+              <div class="module-card ${isCompleted ? 'completed' : ''}" onclick="openPanel('${m.id}')">
+                <div class="module-top">
+                  <span class="module-number">M${m.num}</span>
+                  <span class="module-duration">⏱ ${m.duration}</span>
+                </div>
+                <div class="module-title">${m.title}</div>
+                <div class="module-desc">${m.desc}</div>
+                <div class="module-footer">
+                  <div class="module-tags">
+                    ${m.tags.map(t => `<span class="module-tag ${t.color}">${t.label}</span>`).join('')}
+                  </div>
+                  <div class="module-check ${isCompleted ? 'checked' : ''}" onclick="toggleModule('${m.id}', event)">
+                    <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  </div>
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </div>
+    `;
+  });
+
+  container.innerHTML = html;
+}
+
+// Tab navigation
+document.getElementById('navTabs').addEventListener('click', (e) => {
+  if (!e.target.classList.contains('nav-tab')) return;
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  e.target.classList.add('active');
+  activeSection = e.target.dataset.section;
+  renderContent();
+});
+
+// Close panel on overlay click
+document.getElementById('expandedPanel').addEventListener('click', (e) => {
+  if (e.target === document.getElementById('expandedPanel')) closePanel();
+});
+
+// Close panel on Escape
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closePanel();
+});
+
+// Init
+updateProgress();
+renderContent();
+</script>
+</body>
+</html>
